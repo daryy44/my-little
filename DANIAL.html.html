@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Письмо</title>
+    <style> 
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Great+Vibes&family=Roboto:wght@300;400;700&display=swap');
+        body {
+            background-color: pink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+        }
+        .letter-wrapper {
+            position: relative;
+            width: 450px;
+            height: 300px;
+            background: white;
+            border: 3px solid black;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            overflow: hidden;
+            transition: opacity 1s ease-in-out;
+            padding: 20px;
+            opacity: 0;
+        }
+        .letter-wrapper.show {
+            opacity: 1;
+        }
+        .folded-corner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to bottom, #ddd, white);
+            clip-path: polygon(0% 0%, 100% 0%, 50% 80%);
+            transition: transform 0.5s ease-in-out;
+        }
+        .hidden-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        p {
+            font-family: 'Great Vibes', cursive;
+            font-size: 24px;
+            color: #4A235A;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .buttons button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .yes { background-color: lightgreen; }
+        .no { background-color: lightcoral; }
+
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; display: none; }
+        }
+    </style>
+</head>
+<body onload="setTimeout(() => document.getElementById('letter').classList.add('show'), 300);">
+    <div class="letter-wrapper" id="letter" onclick="openLetter()">
+        <div class="folded-corner"></div>
+        <p id="closed-text"><strong>Хатты ашу үшін басыңыз</strong></p>
+        <div class="hidden-content" id="content">
+            <p>Сіз хатты көргіңіз келе ме?</p>
+            <div class="buttons">
+                <button class="yes" onclick="showNext('window1_5')">Иә</button>
+                <button class="no">Жоқ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="letter-wrapper" id="window1_5" style="display: none;">
+        <p><strong>Айка апше, мені кешіріңізші, өтінемін</strong></p>
+        <button class="yes" onclick="showNext('window2')">Жалғастыру</button>
+    </div>
+
+    <div class="letter-wrapper" id="window2" style="display: none;">
+        <p>Сізді ренжіткенім үшін қатты өкінемін. Өз қателігімді түсіндім және дұрыс істемегенімді мойындаймын. Сізден кешірім сұраймын.</p>
+        <button class="yes" onclick="showNext('window3')">Иә</button>
+    </div>
+
+    <div class="letter-wrapper" id="window3" style="display: none;">
+        <p>Мен өз қателігімді түсіндім және жасаған ісіме қатты өкінемін. Сізден кешірім сұраймын. Мені кешіріңіз.</p>
+        <button class="yes" onclick="showNext('window4')">Иә</button>
+    </div>
+
+    <div class="letter-wrapper" id="window4" style="display: none;">
+        <p>Сіз мен үшін жақын әрі қадірлі адамсыз, және мен сізді ренжіткеніме қатты өкінемін. Сізден кешірім сұраймын.</p>
+        <button class="yes" onclick="showNext('window5')">Иә</button>
+    </div>
+    
+    <div class="letter-wrapper" id="window5" style="display: none;">
+        <p>Кешіріміңізді алуға лайық болсам, кешіріңіз өтінемін.</p>
+        <button class="yes" onclick="fadeOutLetter()">Аяқтау</button>
+    </div>
+
+    <script>
+        function openLetter() {
+            let letter = document.getElementById('letter');
+            letter.classList.add('show');
+            setTimeout(() => {
+                document.getElementById('closed-text').style.display = 'none';
+                document.getElementById('content').style.display = 'flex';
+            }, 500);
+        }
+
+        function showNext(nextId) {
+            document.querySelectorAll('.letter-wrapper').forEach(letter => letter.style.display = 'none');
+            let nextElement = document.getElementById(nextId);
+            nextElement.style.display = 'flex';
+            setTimeout(() => nextElement.classList.add('show'), 100);
+        }
+
+        function fadeOutLetter() {
+            let letter = document.getElementById('window5');
+            letter.classList.add('fade-out');
+            setTimeout(() => letter.style.display = 'none', 1000);
+        }
+    </script>
+</body>
+</html>
